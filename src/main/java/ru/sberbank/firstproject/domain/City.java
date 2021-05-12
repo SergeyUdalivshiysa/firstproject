@@ -3,15 +3,13 @@ package ru.sberbank.firstproject.domain;
 import java.util.Objects;
 
 public class City {
-    private int id;
-    private String name;
-    private String region;
-    private String district;
-    private int population;
-    private int foundation;
+    private final String name;
+    private final String region;
+    private final String district;
+    private final int population;
+    private final int foundation;
 
-    public City(int id, String name, String region, String district, int population, int foundation) {
-        this.id = id;
+    public City(String name, String region, String district, int population, int foundation) {
         this.name = name;
         this.region = region;
         this.district = district;
@@ -19,20 +17,13 @@ public class City {
         this.foundation = foundation;
     }
 
-    public int getId() {
-        return id;
-    }
-
-
     public String getName() {
         return name;
     }
 
-
     public String getRegion() {
         return region;
     }
-
 
     public String getDistrict() {
         return district;
@@ -47,12 +38,12 @@ public class City {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         City city = (City) o;
-        return id == city.id && population == city.population && foundation == city.foundation && Objects.equals(name, city.name) && Objects.equals(region, city.region) && Objects.equals(district, city.district);
+        return population == city.population && foundation == city.foundation && Objects.equals(name, city.name) && Objects.equals(region, city.region) && Objects.equals(district, city.district);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, region, district, population, foundation);
+        return Objects.hash(name, region, district, population, foundation);
     }
 
     @Override

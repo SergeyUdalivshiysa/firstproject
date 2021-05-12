@@ -3,6 +3,9 @@ package ru.sberbank.firstproject;
 import ru.sberbank.firstproject.domain.City;
 import ru.sberbank.firstproject.services.Parser;
 import ru.sberbank.firstproject.services.Sorter;
+import ru.sberbank.firstproject.util.CityComparator;
+import ru.sberbank.firstproject.util.DistrictAndCityComparator;
+
 import javax.swing.*;
 import java.io.File;
 import java.util.List;
@@ -18,35 +21,36 @@ public class Main {
             System.out.println("Запуск парсинага");
             Parser parser = new Parser();
             //Модуль 1
-            List<City> cities = parser.parse(file);
-
-            if (parser.isSuccess()) {
-                System.out.println("Парсинг прошел успешно");
+            try {
+                List<City> cities = parser.parse(file);
                 getAndExecuteCommands(cities);
+                System.out.println("Парсинг прошел успешно");
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("Ошибка при парсинге, проверьте корректность файла");
             }
         }
     }
 
-    private static void getAndExecuteCommands(List<City> cities) {
-        Sorter sorter = new Sorter();
+    private static void getAndExecuteCommands(List<City> cities) throws Exception {
+        Sorter sorter = new Sorter(cities);
+        System.out.println("Введите команду:\n" +
+                "1 - Список городов, отсартированный по алфавиту, без учета ригистра\n" +
+                "2 - Список городов, отсартированный по федеральному округу и наименованию города внутри каждого федерального округа в алфавитном порядке по убыванию с учетом регистра\n" +
+                "3 - Город с самым большим населением\n" +
+                "4 - Количество городов в разрезе регионов\n" +
+                "5 - Выход\n");
         while (true) {
-            System.out.println("Введите команду:\n" +
-                    "1 - Список городов, отсартированный по алфавиту, без учета ригистра\n" +
-                    "2 - Список городов, отсартированный по федеральному округу и наименованию города внутри каждого федерального округа в алфавитном порядке по убыванию с учетом регистра\n" +
-                    "3 - Город с самым большим населением\n" +
-                    "4 - Количество городов в разрезе регионов\n" +
-                    "5 - Выход\n");
-
             Scanner scanner = new Scanner(System.in);
             String command = scanner.nextLine();
             switch (command) {
                 case "1":
                     //Модуль 2
-                    System.out.println(sorter.getCitiesListSortedByName(cities) + "\n");
+                    System.out.println(sorter.getCitiesListSortedByComparator(cities, new CityComparator()) + "\n");
                     break;
                 case "2":
                     //Модуль 2
-                    System.out.println(sorter.getCitiesListSortedByDistrict(cities) + "\n");
+                    System.out.println(sorter.getCitiesListSortedByComparator(cities, new DistrictAndCityComparator()) + "\n");
                     break;
                 case "3":
                     //Модуль 3
@@ -72,7 +76,6 @@ public class Main {
         }
 
     }
-
 
 
 }

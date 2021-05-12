@@ -1,50 +1,32 @@
 package ru.sberbank.firstproject.services;
 
 import ru.sberbank.firstproject.domain.City;
+
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 
 public class Parser {
-
-
-    private boolean isSuccess = false;
-
-    public boolean isSuccess() {
-        return isSuccess;
-    }
-
     public Parser() {
     }
 
-
-    public List<City> parse(File file) {
+    public List<City> parse(File file) throws FileNotFoundException {
         List<City> cities = new ArrayList<>();
-        try {
-            Scanner scanner = new Scanner(file);
-            while (scanner.hasNext()) {
-                int id = Integer.parseInt(getClearString(scanner));
-                String name = getClearString(scanner);
-                String region = getClearString(scanner);
-                String district = getClearString(scanner);
-                int population = Integer.parseInt(getClearString(scanner));
-                int foundation = Integer.parseInt(getClearString(scanner));
-                City city = new City(id, name, region, district, population, foundation);
-                cities.add(city);
-            }
-            isSuccess = true;
-            scanner.close();
-        } catch (Exception e) {
-            System.out.println("Ошибка при парсинге файла, проверте наличие файла и соответсвование требованиям");
+        Scanner scanner = new Scanner(file);
+        while (scanner.hasNext()) {
+            String[] strings = scanner.nextLine().split(";");
+            String name = strings[1];
+            String region = strings[2];
+            String district = strings[3];
+            int population = Integer.parseInt(strings[4]);
+            int foundation = Integer.parseInt(strings[5]);
+            City city = new City(name, region, district, population, foundation);
+            cities.add(city);
         }
-
+        scanner.close();
         return cities;
-    }
-
-
-    private String getClearString(Scanner scanner) {
-        return scanner.nextLine().replaceAll(";", "");
     }
 }
