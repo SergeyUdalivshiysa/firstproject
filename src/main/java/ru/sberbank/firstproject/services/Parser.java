@@ -1,8 +1,6 @@
 package ru.sberbank.firstproject.services;
 
-import org.springframework.stereotype.Service;
 import ru.sberbank.firstproject.domain.City;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
