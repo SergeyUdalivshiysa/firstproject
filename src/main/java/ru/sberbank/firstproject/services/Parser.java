@@ -2,7 +2,6 @@ package ru.sberbank.firstproject.services;
 
 import ru.sberbank.firstproject.domain.City;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -21,9 +20,8 @@ public class Parser {
     }
 
 
-    public List<City> parse(String path) {
+    public List<City> parse(File file) {
         List<City> cities = new ArrayList<>();
-        File file = new File(path);
         try {
             Scanner scanner = new Scanner(file);
             while (scanner.hasNext()) {

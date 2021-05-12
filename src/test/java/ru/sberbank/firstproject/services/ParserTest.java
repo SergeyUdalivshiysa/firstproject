@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import ru.sberbank.firstproject.domain.City;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +29,7 @@ class ParserTest {
 
     @Test
     void parse() {
-        List<City> testCities = parser.parse(path);
+        List<City> testCities = parser.parse(new File(path));
         Assertions.assertEquals(cities, testCities);
     }
 }
