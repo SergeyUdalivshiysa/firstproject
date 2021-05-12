@@ -5,7 +5,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import ru.sberbank.firstproject.domain.City;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,5 +33,15 @@ class ParserTest {
     void parse() {
         List<City> testCities = parser.parse(new File(path));
         Assertions.assertEquals(cities, testCities);
+        Assertions.assertEquals(true, parser.isSuccess());
+    }
+
+    @Test
+    void parseIncorrectData() {
+        ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStreamCaptor));
+        List<City> testCities = parser.parse(new File("src/test/java/ru/sberbank/firstproject/resources/incorrectTestData.txt"));
+        Assertions.assertEquals("Ошибка при парсинге файла, проверте наличие файла и соответсвование требованиям", outputStreamCaptor.toString()
+                .trim());
     }
 }
