@@ -29,6 +29,6 @@ class ParserTest {
     @Test
     void parse() {
         List<City> testCities = parser.parse(path);
-        Assertions.assertEquals(cities, testCities);
+        Assertions.assertEquals(cities.toString(), testCities.toString());
     }
 }
