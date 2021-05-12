@@ -11,6 +11,11 @@ import java.util.Scanner;
 public class Parser {
 
 
+    private boolean isSuccess = false;
+
+    public boolean isSuccess() {
+        return isSuccess;
+    }
 
     public Parser() {
     }
@@ -31,9 +36,12 @@ public class Parser {
                 City city = new City(id, name, region, district, population, foundation);
                 cities.add(city);
             }
-        } catch (FileNotFoundException e) {
-            System.out.println("Файл не найден");
+            isSuccess = true;
+            scanner.close();
+        } catch (Exception e) {
+            System.out.println("Ошибка при парсинге файла, проверте наличие файла и соответсвование требованиям");
         }
+
         return cities;
     }
 
