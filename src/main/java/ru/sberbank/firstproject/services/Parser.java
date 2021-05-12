@@ -38,6 +38,7 @@ public class Parser {
             scanner.close();
         } catch (Exception e) {
             System.out.println("Ошибка при парсинге файла, проверте наличие файла и соответсвование требованиям");
+            System.exit(0);
         }
 
         return cities;
