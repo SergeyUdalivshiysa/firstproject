@@ -1,13 +1,26 @@
 package ru.sberbank.firstproject.domain;
 
+import org.hibernate.annotations.NamedQueries;
+import javax.persistence.*;
 import java.util.Objects;
+import org.hibernate.annotations.NamedQuery;
 
+@Entity
+@NamedQueries({
+        @NamedQuery(name = "DELETE", query = "delete from City c where c.name = :name"),
+        @NamedQuery(name = "findByName", query = "select c from City c where c.name = :name")
+})
 public class City {
-    private final String name;
-    private final String region;
-    private final String district;
-    private final int population;
-    private final int foundation;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+    private String name;
+    private String region;
+    private String district;
+    private int population;
+    private int foundation;
+
 
     public City(String name, String region, String district, int population, int foundation) {
         this.name = name;
@@ -15,6 +28,10 @@ public class City {
         this.district = district;
         this.population = population;
         this.foundation = foundation;
+    }
+
+    public City() {
+
     }
 
     public String getName() {
@@ -56,4 +73,5 @@ public class City {
                 ", yearOfFoundation=" + foundation +
                 '}';
     }
+
 }

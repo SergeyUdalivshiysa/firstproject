@@ -1,12 +1,14 @@
 package ru.sberbank.firstproject;
 
+import ru.sberbank.firstproject.db.dao.CityDAO;
+import ru.sberbank.firstproject.db.dao.util.DatabaseFiller;
 import ru.sberbank.firstproject.domain.City;
 import ru.sberbank.firstproject.services.Parser;
+import ru.sberbank.firstproject.services.Printer;
 import ru.sberbank.firstproject.services.Sorter;
-import ru.sberbank.firstproject.util.CityComparator;
-import ru.sberbank.firstproject.util.DistrictAndCityComparator;
+import ru.sberbank.firstproject.services.util.CityComparator;
+import ru.sberbank.firstproject.services.util.DistrictAndCityComparator;
 
-import javax.swing.*;
 import java.io.File;
 import java.util.List;
 import java.util.Scanner;
@@ -14,10 +16,21 @@ import java.util.Scanner;
 
 public class Main {
 
+
+
+
     public static void main(String[] args) {
+
+
+        DatabaseFiller.fillDatabase();
+        System.out.println(CityDAO.getCityByName("Адыгейск"));
+        CityDAO.deleteCityByName("Адыгейск");
+        System.out.println(CityDAO.getCityByName("Адыгейск"));
+        List<City> cities1 = CityDAO.getAllCities();
+        cities1.forEach(System.out::println);
+
         while (true) {
             File file = chooseFile();
-
             System.out.println("Запуск парсинага");
             Parser parser = new Parser();
             //Модуль 1
@@ -32,7 +45,7 @@ public class Main {
         }
     }
 
-    private static void getAndExecuteCommands(List<City> cities) throws Exception {
+    private static void getAndExecuteCommands(List<City> cities) {
         Sorter sorter = new Sorter(cities);
         System.out.println("Введите команду:\n" +
                 "1 - Список городов, отсартированный по алфавиту, без учета ригистра\n" +
@@ -40,25 +53,25 @@ public class Main {
                 "3 - Город с самым большим населением\n" +
                 "4 - Количество городов в разрезе регионов\n" +
                 "5 - Выход\n");
+        Scanner scanner = new Scanner(System.in);
         while (true) {
-            Scanner scanner = new Scanner(System.in);
             String command = scanner.nextLine();
             switch (command) {
                 case "1":
                     //Модуль 2
-                    System.out.println(sorter.getCitiesListSortedByComparator(cities, new CityComparator()) + "\n");
+                    Printer.printResult(sorter.getCitiesListSortedByComparator(new CityComparator()));
                     break;
                 case "2":
                     //Модуль 2
-                    System.out.println(sorter.getCitiesListSortedByComparator(cities, new DistrictAndCityComparator()) + "\n");
+                    Printer.printResult(sorter.getCitiesListSortedByComparator(new DistrictAndCityComparator()));
                     break;
                 case "3":
                     //Модуль 3
-                    System.out.println(sorter.getMostPopulatedCity(cities) + "\n");
+                    Printer.printResult(sorter.getMostPopulatedCity());
                     break;
                 case "4":
                     //Модуль 4
-                    System.out.println(sorter.getNumberOfCitiesWithinRegions(cities) + "\n");
+                    Printer.printResult(sorter.getNumberOfCitiesWithinRegions());
                     break;
                 case "5":
                     System.exit(0);
@@ -69,13 +82,12 @@ public class Main {
     }
 
     private static File chooseFile() {
-        JFileChooser jFileChooser = new JFileChooser();
+
+        return new File("/Users/a19189114/IdeaProjects/firstproject/src/main/resources/testdata.txt");
+       /* JFileChooser jFileChooser = new JFileChooser();
         while (true) {
             int ret = jFileChooser.showDialog(null, "Выбрать файл");
             if (ret == JFileChooser.APPROVE_OPTION) return jFileChooser.getSelectedFile();
-        }
-
+        }*/
     }
-
-
 }

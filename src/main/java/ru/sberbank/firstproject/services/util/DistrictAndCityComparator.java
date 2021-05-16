@@ -1,4 +1,4 @@
-package ru.sberbank.firstproject.util;
+package ru.sberbank.firstproject.services.util;
 
 import ru.sberbank.firstproject.domain.City;
 
